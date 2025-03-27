@@ -68,7 +68,7 @@ public class SQLiteConnectionManager {
       }
     } catch (SQLException e) {
       // System.out.println(e.getMessage());
-      logger.warning(e.getMessage());
+      logger.log(Level.WARNING, "Exception occurred", e);
     }
   }
 

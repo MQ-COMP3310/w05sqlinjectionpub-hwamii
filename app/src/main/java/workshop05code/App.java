@@ -30,7 +30,7 @@ public class App {
     }
 
     // End code for logging exercise
-    
+
     /**
      * @param args the command line arguments
      */
@@ -42,7 +42,6 @@ public class App {
 
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
             logger.log(Level.INFO, "Wordle created and connected.");
-            // System.out.println("Wordle created and connected.");
         } else {
             logger.log(Level.INFO, "Not able to connect. Sorry!");
             return;
@@ -68,10 +67,7 @@ public class App {
             }
 
         } catch (IOException e) {
-            // logger.log(Level.WARNING, "Not able to load . Sorry!", e);
             logger.severe(e.getMessage());
-            // System.out.println("Not able to load . Sorry!");
-            // System.out.println(e.getMessage());
             return;
         }
 
@@ -85,23 +81,29 @@ public class App {
 
                 System.out.println("You've guessed '" + guess+"'.");
 
-                
-
-                if (wordleDatabaseConnection.isValidWord(guess)) { 
-                    System.out.println("Success! It is in the the list.\n");
-                    // Log successful/valid guesses read from data.
-                    // logger.info("Success! It is in the the list.\n");
-                }else{
-                    System.out.println("Sorry. This word is NOT in the the list.\n");
-                    // Log unsuccessful/invalid guesses read from data.
-                    logger.info("Sorry, this word is not on the list.");
+                if (guess.matches("[a-z]{4}")) {   
+                    if (wordleDatabaseConnection.isValidWord(guess)) {         
+                        System.out.println("Success! It is in the the list.\n");
+                        // Log successful/valid guesses read from data.
+                        logger.info("Success! It is in the the list.\n");
+                    } else {
+                        System.out.println("Sorry. This word is NOT in the the list.\n");
+                        // Log unsuccessful/invalid guesses read from data.
+                        logger.info("Sorry, this word is not on the list.");
+                    }      
                 }
-
+                else{
+                    System.out.println("Sorry, the word is not 4 letters long or not in lowercase.\n");
+                    logger.info("Sorry, the word is not 4 letters long or not in lowercase.");
+                    
+                    System.out.print("Enter a 4 letter word for a guess or q to quit: " );
+                    guess = scanner.nextLine();
+                }     
                 System.out.print("Enter a 4 letter word for a guess or q to quit: " );
-                guess = scanner.nextLine();
+                guess = scanner.nextLine();           
             }
+
         } catch (NoSuchElementException | IllegalStateException e) {
-            // e.printStackTrace();
             logger.log(Level.WARNING, "Input cannot be read. Sorry!", e);
         }
 
