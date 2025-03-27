@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -86,7 +87,7 @@ public class SQLiteConnectionManager {
           return true;
         }
       } catch (SQLException e) {
-        System.out.println(e.getMessage());
+        logger.log(Level.WARNING, "Not able to connect. Sorry!", e);
         return false;
       }
     }
@@ -111,7 +112,8 @@ public class SQLiteConnectionManager {
         return true;
 
       } catch (SQLException e) {
-        System.out.println(e.getMessage());
+        logger.log(Level.WARNING, "Not able to launch. Sorry!", e);
+        // System.out.println(e.getMessage());
         return false;
       }
     }
@@ -133,7 +135,7 @@ public class SQLiteConnectionManager {
       pstmt.setString(2, word);
       pstmt.executeUpdate();
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      logger.log(Level.WARNING, "Exception thrown when adding a word", e);
     }
 
   }
@@ -148,7 +150,7 @@ public class SQLiteConnectionManager {
     String sql = "SELECT count(id) as total FROM validWords WHERE word like ?";
 
     try (Connection conn = DriverManager.getConnection(databaseURL);
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+      PreparedStatement stmt = conn.prepareStatement(sql)) {
       stmt.setString(1, guess);
       ResultSet resultRows = stmt.executeQuery();
       if (resultRows.next()) {
@@ -159,7 +161,8 @@ public class SQLiteConnectionManager {
       return false;
 
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      // System.out.println(e.getMessage());
+      logger.log(Level.WARNING, "Input is not a valid word. Sorry!", e);
       return false;
     }
 

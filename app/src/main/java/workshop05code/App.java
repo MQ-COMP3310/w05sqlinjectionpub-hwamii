@@ -16,17 +16,19 @@ import java.util.logging.Logger;
  */
 public class App {
     // Start code for logging exercise
+    private static final Logger logger = Logger.getLogger(App.class.getName());
+
     static {
         // must set before the Logger
         // loads logging.properties from the classpath
         try {// resources\logging.properties
             LogManager.getLogManager().readConfiguration(new FileInputStream("resources/logging.properties"));
         } catch (SecurityException | IOException e1) {
-            e1.printStackTrace();
+            // e1.printStackTrace();
+            logger.log(Level.WARNING, "Error reading logging.properties", e1);
         }
     }
 
-    private static final Logger logger = Logger.getLogger(App.class.getName());
     // End code for logging exercise
     
     /**
@@ -66,7 +68,8 @@ public class App {
             }
 
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Not able to load . Sorry!", e);
+            // logger.log(Level.WARNING, "Not able to load . Sorry!", e);
+            logger.severe(e.getMessage());
             // System.out.println("Not able to load . Sorry!");
             // System.out.println(e.getMessage());
             return;
@@ -79,14 +82,17 @@ public class App {
             String guess = scanner.nextLine();
 
             while (!guess.equals("q")) {
+
                 System.out.println("You've guessed '" + guess+"'.");
 
+                
+
                 if (wordleDatabaseConnection.isValidWord(guess)) { 
-                    // System.out.println("Success! It is in the the list.\n");
+                    System.out.println("Success! It is in the the list.\n");
                     // Log successful/valid guesses read from data.
-                    logger.info("Success! It is in the the list.\n");
+                    // logger.info("Success! It is in the the list.\n");
                 }else{
-                    // System.out.println("Sorry. This word is NOT in the the list.\n");
+                    System.out.println("Sorry. This word is NOT in the the list.\n");
                     // Log unsuccessful/invalid guesses read from data.
                     logger.info("Sorry, this word is not on the list.");
                 }
